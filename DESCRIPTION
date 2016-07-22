@@ -1,0 +1,14 @@
+Package: sparknn
+Type: Package
+Title: Wrapper for KNN algorihtm in Spark
+Version: 0.1.0
+Author: Sean Lopp
+Maintainer: Sean Lopp <sean@rstudio.com>
+Description: Run K nearest neighbour classification in Spark from R.
+License: file LICENSE
+LazyData: true
+Depends:
+    sparkapi,
+    sparklyr,
+    magrittr
+RoxygenNote: 5.0.0

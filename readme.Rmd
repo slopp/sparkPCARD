@@ -1,0 +1,19 @@
+---
+title: "R Notebook"
+output: html_document
+---
+
+```{r}
+library(sparklyr)
+library(dplyr)
+```
+
+```{r}
+sc <- spark_connect(master = "local")
+copy_to(sc, iris, "iris")
+
+
+iris <- tbl(sc, "iris")
+ml_knn(iris, 10, response = "Species", features = c("Sepal_Length", "Sepal_Width", "Petal_Length", "Petal_Width"))
+```
+
