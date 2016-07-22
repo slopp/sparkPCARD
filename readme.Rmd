@@ -12,9 +12,10 @@ An R wrapper for the [PCARD Spark package](https://github.com/djgarcia/PCARD). W
 ## Initialization
 
 ```{r setup, results='hide'}
-library(sparklyr)
+library(sparkPCARD)
 library(dplyr)
 library(tidyr)
+
 sc <- spark_connect(master = "local")
 
 # Load the iris dataset
