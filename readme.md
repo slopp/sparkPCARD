@@ -1,7 +1,4 @@
 sparkPCARD
-================
-
-sparkPCARD
 ==========
 
 An R wrapper for the [PCARD Spark package](https://github.com/djgarcia/PCARD). Which, does the folllowing: The algorithm performs Random Discretization and Principal Components Analysis to the input data, then joins the results and trains a decision tree on it.
