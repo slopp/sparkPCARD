@@ -1,5 +1,7 @@
 
-#' ml_pcard An R wrapper for the PCARD Spark Package that performs Random Discretization and PCA, then joins the results and trains an ensemble of decision trees.
+#' ml_pcard 
+#' 
+#' An R wrapper for the PCARD Spark Package that performs Random Discretization and PCA, then joins the results and trains an ensemble of decision trees.
 #'
 #' @param x - a tbl_spark object
 #' @param response  - name of the column containing group labels
@@ -17,29 +19,29 @@ ml_pcard <- function(x,
                    num.trees = 10,
                    max.bins = 5){
 
-  df <- spark_dataframe(x)
-  sc <- spark_connection(df)
+  df <- sparkapi::spark_dataframe(x)
+  sc <- sparkapi::spark_connection(df)
 
-  num.trees <- sparklyr:::ensure_scalar_integer(num.trees)
-  max.bins <- sparklyr:::ensure_scalar_integer(max.bins)
+  num.trees <- sparklyr::ensure_scalar_integer(num.trees)
+  max.bins <- sparklyr::ensure_scalar_integer(max.bins)
 
 
 
-  df <- sparklyr:::prepare_response_features_intercept(df, response, features, NULL)
+  df <- sparklyr::ml_prepare_response_features_intercept(df, response, features, NULL)
   envir <- new.env(parent = emptyenv())
-  tdf <- sparklyr:::ml_prepare_dataframe(df, features, response, envir = envir)
+  tdf <- sparklyr::ml_prepare_dataframe(df, features, response, envir = envir)
 
   
-  pcard <- sc %>% invoke_new("org.apache.spark.ml.classification.PCARDClassifier")  
+  pcard <- sc %>% sparkapi::invoke_new("org.apache.spark.ml.classification.PCARDClassifier")  
 
   model <- pcard %>% 
-    invoke("setTrees", num.trees) %>%
-    invoke("setCuts", max.bins) %>% 
-    invoke("setLabelCol", envir$response) %>% 
-    invoke("setFeaturesCol", envir$features)
+    sparkapi::invoke("setTrees", num.trees) %>%
+    sparkapi::invoke("setCuts", max.bins) %>% 
+    sparkapi::invoke("setLabelCol", envir$response) %>% 
+    sparkapi::invoke("setFeaturesCol", envir$features)
   
   fit <- model %>% 
-    invoke("fit", tdf)
+    sparkapi::invoke("fit", tdf)
 
   sparklyr:::ml_model("pcard", fit,
            features = features,
