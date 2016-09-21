@@ -19,8 +19,8 @@ ml_pcard <- function(x,
                    num.trees = 10,
                    max.bins = 5){
 
-  df <- sparkapi::spark_dataframe(x)
-  sc <- sparkapi::spark_connection(df)
+  df <- sparklyr::spark_dataframe(x)
+  sc <- sparklyr::spark_connection(df)
 
   num.trees <- sparklyr::ensure_scalar_integer(num.trees)
   max.bins <- sparklyr::ensure_scalar_integer(max.bins)
@@ -32,16 +32,16 @@ ml_pcard <- function(x,
   tdf <- sparklyr::ml_prepare_dataframe(df, features, response, envir = envir)
 
   
-  pcard <- sc %>% sparkapi::invoke_new("org.apache.spark.ml.classification.PCARDClassifier")  
+  pcard <- sc %>% sparklyr::invoke_new("org.apache.spark.ml.classification.PCARDClassifier")  
 
   model <- pcard %>% 
-    sparkapi::invoke("setTrees", num.trees) %>%
-    sparkapi::invoke("setCuts", max.bins) %>% 
-    sparkapi::invoke("setLabelCol", envir$response) %>% 
-    sparkapi::invoke("setFeaturesCol", envir$features)
+    sparklyr::invoke("setTrees", num.trees) %>%
+    sparklyr::invoke("setCuts", max.bins) %>% 
+    sparklyr::invoke("setLabelCol", envir$response) %>% 
+    sparklyr::invoke("setFeaturesCol", envir$features)
   
   fit <- model %>% 
-    sparkapi::invoke("fit", tdf)
+    sparklyr::invoke("fit", tdf)
 
   sparklyr:::ml_model("pcard", fit,
            features = features,
