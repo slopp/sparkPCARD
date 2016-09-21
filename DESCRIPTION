@@ -10,7 +10,6 @@ Description: An R wrapper for the PCARD Spark Package that performs Random
 License: file LICENSE
 LazyData: true
 Depends:
-    sparkapi,
     sparklyr,
     magrittr
 RoxygenNote: 5.0.1
